@@ -26,21 +26,43 @@ class CategoryController extends  AppController
 
     public function actionView($id)
     {
-       $id =  Yii::$app->request->get('id');
+        //$id =  Yii::$app->request->get('id');
 
-       //$products = Product::find()->where(['category_id' => $id])->all();
+        $category = Category::findOne($id);
 
-       $query = Product::find()->where(['category_id' => $id]);
+        if(empty($category))
+            throw new \yii\web\HttpException(404, 'Такой категории нет.');
 
-       $pages = new Pagination( ['totalCount' => $query->count(), 'pageSize' => 3, 'forcePageParam' => false, 'pageSizeParam' => false ] );
+        //$products = Product::find()->where(['category_id' => $id])->all();
 
-       $products = $query->offset($pages->offset)->limit($pages->limit)->all();
+        $query = Product::find()->where(['category_id' => $id]);
 
-       $category = Category::findOne($id);
+        $pages = new Pagination( ['totalCount' => $query->count(), 'pageSize' => 3, 'forcePageParam' => false, 'pageSizeParam' => false ] );
 
-       $this->setMeta('Gillette | ' . $category->name, $category->keywords, $category->description );
+        $products = $query->offset($pages->offset)->limit($pages->limit)->all();
+
+
+        $this->setMeta('Gillette | ' . $category->name, $category->keywords, $category->description );
 
         return $this->render('view', compact('products', 'pages', 'category'));
+    }
+
+    public function actionSearch()
+    {
+        $search =  trim(Yii::$app->request->get('s'));
+
+        $this->setMeta('Gillette | ' . $search );
+
+        if(!$search)
+            return  $this->render('search', compact('search'));
+
+        $query = Product::find()->where(['like', 'name', $search ]);
+
+        $pages = new Pagination( ['totalCount' => $query->count(), 'pageSize' => 3, 'forcePageParam' => false, 'pageSizeParam' => false ] );
+
+        $products = $query->offset($pages->offset)->limit($pages->limit)->all();
+
+        return $this->render('search', compact('products', 'pages', 'search'));
     }
 
 }
