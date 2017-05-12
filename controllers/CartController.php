@@ -50,4 +50,20 @@ class CartController extends AppController
 
         return $this->render('cart-modal', compact('session'));
     }
+
+    public function actionDelItem()
+    {
+        $id = Yii::$app->request->get('id');
+        $session = Yii::$app->session;
+
+        $session->open();
+
+        $cart = new Cart();
+
+        $cart->recalc($id);
+
+        $this->layout = false;
+
+        return $this->render('cart-modal', compact('session'));
+    }
 }

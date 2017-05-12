@@ -35,7 +35,7 @@
                     <p class="cart_total_price">$<?= $item['price'] * $item['qty'] ?></p>
                 </td>
                 <td class="cart_delete">
-                    <a class="cart_quantity_delete del-item" href=""><i class="fa fa-times"></i></a>
+                    <a class="cart_quantity_delete del-item" data-id="<?= $id ?>" href=""><i class="fa fa-times"></i></a>
                 </td>
             </tr>
             <?php endforeach; ?>
