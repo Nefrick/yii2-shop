@@ -15,7 +15,7 @@
             <?php foreach ($session['cart'] as $id => $item): ?>
             <tr>
                 <td class="cart_product">
-                    <a href=""><?= $item['img'] ?></a>
+                    <?= \yii\bootstrap\Html::img("@web/images/products/{$item['img']}", ['alt' => $item['name'], 'height' => 50 ]); ?>
                 </td>
                 <td class="cart_description">
                     <h4><a href=""><?= $item['name'] ?></a></h4>
